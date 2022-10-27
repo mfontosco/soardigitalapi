@@ -30,8 +30,8 @@ sequelizeConnection.authenticate().then(()=> {
 
 
 
-const port = 5000 || process.env.PORT
-app.listen(port, (err)=>{
+const PORT = 5000 || process.env.PORT
+app.listen(PORT, (err)=>{
     if(err){
         throw err
     }
