@@ -24,23 +24,10 @@ app.use("/api/v1/like",LikesRoute)
 
 sequelizeConnection.authenticate().then(()=> {
     console.log('Connected')
-}).catch((err)=>{
+}).catch((err)=>{g
     console.log(err)
 })
 
-
-const models = {
-    User: userModel(sequelizeConnection, Sequelize.DataTypes),
-    Post: postModel(sequelizeConnection, Sequelize.DataTypes),
-   Likes: likesModel(sequelizeConnection, Sequelize.DataTypes),
-
-    
-}
-models.User.hasMany(models.Post)
-models.Post.belongsTo(models.User)
-
-models.Post.hasMany(models.Likes)
-models.Likes.belongsTo(models.Post)
 
 
 const port = 5000 || process.env.PORT
