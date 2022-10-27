@@ -24,7 +24,7 @@ app.use("/api/v1/like",LikesRoute)
 
 sequelizeConnection.authenticate().then(()=> {
     console.log('Connected')
-}).catch((err)=>{g
+}).catch((err)=>{
     console.log(err)
 })
 
