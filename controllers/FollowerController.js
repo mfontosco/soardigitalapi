@@ -8,6 +8,7 @@ const models = {
 
 const createFollower =async(req,res)=>{
     const {followerId} = req.params
+    const {mainUserId} =req.body
 
     try{
                 let follow = await models.Follower.create({
@@ -27,16 +28,16 @@ const UnComment =async(req,res)=>{
     const {id} =req.params
 
     try{
-                let createPost = await models.Follower.destroy({
+             await models.Follower.destroy({
                     where:{userid:userid}
                 })
                 res.status(200).json({
                     status:"success",
-                    createPost
+                    messsage:"successfully deleted"
                 })
             }catch(err){
                 console.log(err)
             }
 }
 
-export {createFollower}
+export {createFollower,UnComment}
