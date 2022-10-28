@@ -6,36 +6,49 @@ const models ={
     Likes:Likes(sequelizeConnection,Sequelize.DataTypes)
 }
 
-const createLikes =async(req,res)=>{
-    const {id} =req.params
-    const {userId} =req.body
-
+//like a post (post request)
+const likePost = async (req, res)=> {
+    const {postid, userid} =  req.body
+    console.log(req.body, "req.query from likes")
     try{
-                let createLike = await models.Likes.create({
-                    postid: id,
-                    userId,
-                })
-                res.status(200).json({
-                    status:"success",
-                    createLike
-                })
-            }catch(err){
-                console.log(err)
-            }
+        let likedPost = await models.Likes.create({
+            postId: postid,
+            userId: userid
+        })
+        res.status(200).json({
+            status: `You just liked a post `,
+            likedPost
+        })
+    }catch(err){
+        res.status(400).json({
+            status: 'Failed',
+            error: "Failed to like post"
+        })
+    }
+    
 }
 
-const UnLike =async(req,res)=>{
-    const {id} =req.params
+
+// unlike post (post)
+
+const unlikePost = async (req, res)=> {
+    const {postId, userId} =  req.body
 
     try{
-                let createLike = await models.Post.destroy({where:{userId:userId}})
-                res.status(200).json({
-                    status:"success",
-                    createLike
-                })
-            }catch(err){
-                console.log(err)
-            }
+        let unlikedPost = await models.Likes.destroy({
+            where: { postId: postId, userId: userId },
+        })
+        res.status(200).json({
+            status: `You just unliked a post  `,
+            unlikedPost
+        })
+    }catch(err){
+        res.status(400).json({
+            status: 'Failed',
+            error: "Failed to unlike post"
+        })
+    }
+    
 }
 
-export {createLikes}
+export {unlikePost,likePost}

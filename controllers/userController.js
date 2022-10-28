@@ -11,6 +11,31 @@ import { Sequelize } from 'sequelize'
 const models ={
     User : User(sequelizeConnection, Sequelize.DataTypes),
 }
+const getUsers= async (req, res)=> {
+  // const {id} = req.params
+  try{
+      let getUser = await models.User.findAll({
+          include: [{
+              model: models.Post 
+          },
+          {
+              model: models.Followers
+          }
+      ]
+      })
+      res.status(200).json({
+          status: 'Success',
+          getUser
+      })
+  }catch(err){
+      res.status(400).json({
+          status: 'Login Failed',
+          error: err
+      })
+  }
+  
+}
+
 const signUp =async(req,res)=>{
     console.log("user",User)
     const {name,email,password,address,interest,status} =req.body
@@ -79,7 +104,28 @@ const loginUser = async(req,res)=>{
     }
 
 }
+// get single user (get)
 
+const getUser = async (req, res)=> {
+  const {id} = req.params
+  try{
+      let getUser = await models.User.findByPk(id, {
+          include: [{
+              model: models.Post 
+          }]
+      })
+      res.status(200).json({
+          status: 'Success',
+          getUser
+      })
+  }catch(err){
+      res.status(400).json({
+          status: 'Login Failed',
+          error: err
+      })
+  }
+  
+}
 //  recoverAccount
 const deactivatedAccount = async (req, res) => {
     const { email } = req.body;
@@ -175,4 +221,4 @@ const deactivatedAccount = async (req, res) => {
   
 
 
-export {signUp,loginUser,recoverAccount,deactivatedAccount}
+export {signUp,loginUser,recoverAccount,deactivatedAccount,getUser,getUsers}

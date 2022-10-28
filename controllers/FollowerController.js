@@ -6,7 +6,7 @@ const models = {
     Follower:Follower(sequelizeConnection.Sequelize.DataTypes)
 }
 
-const createFollower =async(req,res)=>{
+const followUser =async(req,res)=>{
     const {followerId} = req.params
     const {mainUserId} =req.body
 
@@ -23,21 +23,25 @@ const createFollower =async(req,res)=>{
                 console.log(err)
             }
 }
-
-const UnComment =async(req,res)=>{
-    const {id} =req.params
-
+//unfollow user
+const unfollowUser =async (req, res)=> {
+    const {followerId, mainUserId} =  req.body
     try{
-             await models.Follower.destroy({
-                    where:{userid:userid}
-                })
-                res.status(200).json({
-                    status:"success",
-                    messsage:"successfully deleted"
-                })
-            }catch(err){
-                console.log(err)
-            }
+        let unfollowUser = await models.Followers.destroy({
+            where: { followerId:followerId,  mainUserId: mainUserId},
+        })
+        res.status(200).json({
+            status: `You just unfolowed post with id ${mainUserId} `,
+            unfollowUser
+        })
+    }catch(err){
+        res.status(400).json({
+            status: 'Failed',
+            error: "Failed to unlike post"
+        })
+    }
+    
 }
 
-export {createFollower,UnComment}
+
+export {followUser,unfollowUser}

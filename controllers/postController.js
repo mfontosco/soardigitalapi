@@ -113,6 +113,72 @@ const editPost = async (req, res) => {
   }
 };
 
+// hide post {put request}
+const hidePost = async (req, res)=> {
+  // const {isHidden} =  req.body
+  const {id} = req.params
+  try{
+      const hidePost = await models.Post.findByPk(id)
+
+      if(hidePost){
+          hidePost.isHidden = true
+      }
+
+
+      const hiddenPost = await hidePost.update(
+          { 
+              hidePost
+          }
+          
+          );
+      
+      res.status(200).json({
+          status: `You just hid this post`,
+          hiddenPost
+      })
+  }catch(err){
+      res.status(400).json({
+          status: 'Failed',
+          error: "Failed to hide post"
+      })
+  }
+  
+}
+
+// unhide post put  request
+
+const unHidePost = async (req, res)=> {
+  // const {isHidden} =  req.body
+  const {id} = req.params
+  try{
+      const postToBeHidden = await models.Post.findByPk(id)
+
+      if(postToBeHidden){
+          postToBeHidden.isHidden = false
+      }
+
+
+      const hiddenPost = await postToBeHidden.update(
+          { 
+              postToBeHidden
+          }
+          
+          );
+      
+      res.status(200).json({
+          status: `You can now view this post`,
+          hiddenPost
+      })
+  }catch(err){
+      res.status(400).json({
+          status: 'Failed',
+          error: "Failed to hide post"
+      })
+  }
+  
+}
+ 
+
 const deletePost = async (req, res) => {
   const { id } = req.params;
   try {
@@ -129,4 +195,4 @@ const deletePost = async (req, res) => {
   }
 };
 
-export { getAllPost, createPost, editPost, deletePost, getSinglePost };
+export { getAllPost, createPost, editPost, deletePost, getSinglePost,hidePost,unHidePost };
